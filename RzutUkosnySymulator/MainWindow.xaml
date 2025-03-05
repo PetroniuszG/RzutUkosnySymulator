@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BallTrajectorySimulation"
         mc:Ignorable="d"
-        Title="Symulacja Rzutu Ukośnego Piłki" Height="600" Width="800"
+        Title="Rzut ukośny" Height="600" Width="800" MinHeight="600" MinWidth="800"
         WindowStartupLocation="CenterScreen"
         SizeChanged="Window_SizeChanged"
-        Background="#F0F0F0">
+        Background="#0C1A26">
     <Window.Resources>
         <DropShadowEffect x:Key="DropShadowEffect" 
                           Color="LightGray" 
@@ -50,9 +50,8 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Panel kontrolny -->
         <Border Grid.Column="0" 
-                Background="White" 
+                Background="#F2F2F2" 
                 CornerRadius="10" 
                 Padding="15" 
                 Margin="0,0,15,0"
@@ -78,55 +77,44 @@
                 <TextBox x:Name="InitialHeightTextBox" 
                          Text="0" 
                          PreviewTextInput="NumberValidationTextBox"/>
+                <TextBlock Text="Wybierz planetę:" Margin="0,10,0,5"/>
+                <ComboBox x:Name="PlanetComboBox" 
+                  Margin="0,0,0,10" 
+                  Height="30"
+                  SelectionChanged="PlanetComboBox_SelectionChanged">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse Width="12" Height="12" Margin="0,0,8,0" Fill="{Binding BackgroundColor}"/>
+                                <TextBlock Text="{Binding Name}"/>
+                                <TextBlock Text=" (g=" Margin="5,0,0,0"/>
+                                <TextBlock Text="{Binding Gravity}"/>
+                                <TextBlock Text=" m/s²)"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
 
                 <Button x:Name="SimulateButton" 
                         Content="Symuluj lot piłki" 
-                        Margin="0,20,0,0" 
+                        Margin="0,20,0,0"
+                        Background="#048C7F"
                         Click="SimulateButton_Click"/>
 
                 <Button x:Name="ResetButton" 
                         Content="Resetuj symulację" 
                         Margin="0,10,0,0" 
-                        Background="#e74c3c"
+                        Background="#F2594B"
                         Click="ResetButton_Click"/>
 
                 <Separator Margin="0,20"/>
 
-                <GroupBox Header="Informacje o trajektorii" Margin="0,10,0,0">
-                    <StackPanel Margin="0,10,0,0">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-
-                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Maks. wysokość:" FontSize="12"/>
-                            <TextBlock Grid.Row="0" Grid.Column="1" x:Name="MaxHeightText" Text="---" FontSize="12" Margin="5,0,0,5" HorizontalAlignment="Right"/>
-
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Zasięg rzutu:" FontSize="12"/>
-                            <TextBlock Grid.Row="1" Grid.Column="1" x:Name="RangeText" Text="---" FontSize="12" Margin="5,0,0,5" HorizontalAlignment="Right"/>
-
-                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Czas lotu:" FontSize="12"/>
-                            <TextBlock Grid.Row="2" Grid.Column="1" x:Name="FlightTimeText" Text="---" FontSize="12" Margin="5,0,0,5" HorizontalAlignment="Right"/>
-
-                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Status:" FontSize="12"/>
-                            <TextBlock Grid.Row="3" Grid.Column="1" x:Name="StatusText" Text="Gotowy" FontSize="10" Margin="5,0,0,5" HorizontalAlignment="Right" Foreground="Green"/>
-                        </Grid>
-                    </StackPanel>
-                </GroupBox>
+                
             </StackPanel>
         </Border>
 
-        <!-- Układ współrzędnych -->
         <Border Grid.Column="1" 
-                Background="White" 
+                Background="#F2F2F2" 
                 CornerRadius="10" 
                 BorderBrush="#DDDDDD" 
                 BorderThickness="1"
@@ -135,7 +123,6 @@
                 <Canvas x:Name="TrajectoryCanvas" 
                         ClipToBounds="True"
                         Margin="20">
-                    <!-- Osie współrzędnych będą rysowane programowo -->
                 </Canvas>
 
                 <Border VerticalAlignment="Top" 
@@ -143,19 +130,50 @@
                         Background="#80FFFFFF"
                         CornerRadius="5"
                         Padding="10,5"
-                        Margin="0,10,10,0">
+                        Margin="0,30,30,0">
                     <TextBlock x:Name="ScaleInfoText" 
                                Text="Skala: 1 px = --- m" 
                                FontSize="12"/>
                 </Border>
-
-                <Border VerticalAlignment="Bottom" 
-                        HorizontalAlignment="Right" 
+                <Border VerticalAlignment="Center" 
+                    HorizontalAlignment="Right" 
+                    Background="#80FFFFFF"
+                    CornerRadius="5"
+                    Padding="10,5"
+                    Margin="0,10,30,0">
+                    <GroupBox Header="Informacje o trajektorii" Width="200">
+                        <StackPanel Margin="0,10,0,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Maks. wysokość:" FontSize="12"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" x:Name="MaxHeightText" Text="---" FontSize="12" Margin="5,0,0,5" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Zasięg rzutu:" FontSize="12"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" x:Name="RangeText" Text="---" FontSize="12" Margin="5,0,0,5" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Czas lotu:" FontSize="12"/>
+                                <TextBlock Grid.Row="2" Grid.Column="1" x:Name="FlightTimeText" Text="---" FontSize="12" Margin="5,0,0,5" HorizontalAlignment="Right"/>
+                                <TextBlock Grid.Row="3" Grid.Column="0" Text="Status:" FontSize="12"/>
+                                <TextBlock Grid.Row="3" Grid.Column="1" x:Name="StatusText" Text="Gotowy" FontSize="10" Margin="5,0,0,5" HorizontalAlignment="Right" Foreground="Green"/>
+                            </Grid>
+                        </StackPanel>
+                    </GroupBox>
+                </Border>
+                <Border VerticalAlignment="Top" 
+                        HorizontalAlignment="Center" 
                         Background="#80FFFFFF"
                         CornerRadius="5"
                         Padding="10,5"
-                        Margin="0,0,10,10">
-                    <StackPanel Orientation="Horizontal">
+                        Margin="0,30,50,0">
+                    <StackPanel Orientation="Horizontal" >
                         <TextBlock Text="Prędkość animacji: " 
                                    FontSize="12"
                                    VerticalAlignment="Center"/>
