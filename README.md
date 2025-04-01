@@ -84,10 +84,3 @@ Symulator opiera się na równaniach rzutu ukośnego z uwzględnieniem oporu pow
 
 - [PetroniuszG](https://github.com/PetroniuszG)
 
-## Licencja
-
-Ten projekt jest udostępniony na licencji MIT. Szczegóły w pliku LICENSE.
-
-## Zgłaszanie błędów
-
-Jeśli znajdziesz błąd lub masz propozycję ulepszenia, prosimy o utworzenie nowego zgłoszenia w zakładce "Issues" na GitHubie.
