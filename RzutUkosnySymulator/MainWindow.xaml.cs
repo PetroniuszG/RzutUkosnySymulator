@@ -12,7 +12,7 @@ using System.Windows.Threading;
 // Plik:         MainWindow.xaml.cs
 // Wersja:       1.0.0
 // Data:         05.03.2025
-// Autor:        Jakub Prabucki
+// Autor:        PetroniuszG
 //==============================================================================
 // Opis:
 //   Aplikacja symulująca lot piłki w rzucie ukośnym na różnych planetach.
